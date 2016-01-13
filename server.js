@@ -10,8 +10,25 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 //Lets listen for events
-io.on('connection', function(){
+io.on('connection', function(socket){
 	console.log('User connected via socket.io!');
+
+	// Listening for the message from the sender
+	socket.on('message', function(message){
+		console.log('Message recieved ' + message.text);
+
+		//io.emit(); Sends the message to everybody incl. the sender
+		//socket.broadcast.emit();
+		// Sends the message to everybody except the sender.
+
+		// Sending message
+		socket.broadcast.emit('message', message);
+	});
+
+	// takes 2 arguments event and body
+	socket.emit('message', {
+		text: 'Welcome to the chat application'
+	});
 });
 
 app.use(express.static(__dirname + '/public'));
