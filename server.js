@@ -11,9 +11,24 @@ var http = require('http').Server(app);
 // Socket.io require
 var io = require('socket.io')(http);
 
+
+var clientInfo = {};
+
 //Lets listen for events
 io.on('connection', function(socket){
 	console.log('User connected via socket.io!');
+
+	socket.on('joinRoom', function(req){
+		// Saving client info
+		clientInfo[socket.id] = req;
+
+		socket.join(req.room);
+		socket.broadcast.to(req.room).emit('message', {
+			name: 'System',
+			text: req.name + ' has joined!',
+			timestamp: moment.valueOf()
+		});
+	});
 
 	// Listening for the message from the sender
 	socket.on('message', function(message){
@@ -26,7 +41,7 @@ io.on('connection', function(socket){
 		// Sending message
 		//socket.broadcast.emit('message', message);
 		message.timestamp = moment().valueOf();
-		io.emit('message', message);
+		io.to(clientInfo[socket.id].room).emit('message', message);
 	});
 
 	// takes 2 arguments event and body
