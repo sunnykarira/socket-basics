@@ -5,11 +5,14 @@ socket.on('connect', function(){
 });
 
 socket.on('message', function(message){
+
+	var momentTimestamp = moment.utc(message.timestamp);
+	var finalTimestamp = momentTimestamp.local().format('h:mm A');
 	console.log('New message:');
-	console.log(message.text);
+	console.log(finalTimestamp + ' ' + message.text);
 
 	// Showing messages on page
-	jQuery('.messages').append('<p>' + message.text + '</p>');
+	jQuery('.messages').append('<p><strong>'+ finalTimestamp+ ': ' +'</strong>' + message.text + '</p>');
 });
 
 // Grabbing input from form
