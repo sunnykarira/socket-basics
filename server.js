@@ -22,7 +22,8 @@ io.on('connection', function(socket){
 		// Sends the message to everybody except the sender.
 
 		// Sending message
-		socket.broadcast.emit('message', message);
+		//socket.broadcast.emit('message', message);
+		io.emit('message', message);
 	});
 
 	// takes 2 arguments event and body

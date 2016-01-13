@@ -7,6 +7,9 @@ socket.on('connect', function(){
 socket.on('message', function(message){
 	console.log('New message:');
 	console.log(message.text);
+
+	// Showing messages on page
+	jQuery('.messages').append('<p>' + message.text + '</p>');
 });
 
 // Grabbing input from form
