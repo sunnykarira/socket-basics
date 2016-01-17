@@ -24,10 +24,12 @@ socket.on('message', function(message){
 	console.log('New message:');
 	console.log(finalTimestamp + ' ' + message.text);
 
-	var $message = jQuery('.messages');
+	var $messages = jQuery('.messages');
+	var $message = jQuery('<li class="list-group-item"></li>');
 
 	$message.append('<p><strong>'+ message.name + ' ' + finalTimestamp + ': </strong></p>');
 	$message.append('<p>'+ message.text +'</p>');
+	$messages.append($message);
 	// Showing messages on page
 	//jQuery('.messages').append('<p><strong>'+ finalTimestamp+ ': ' +'</strong>' + message.text + '</p>');
 });
